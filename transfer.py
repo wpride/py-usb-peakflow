@@ -91,33 +91,30 @@ print "Format type: " + format_type
 if format_type=="f3":
 
     end_index = replaced_read.rfind("7d")
-    print("End Index chars: " + replaced_read[end_index:end_index+2])
 
-    first_fev = replaced_read[end_index-2:end_index]
-    print("First fev: " + first_fev)
-
+    # make sure we're in the right place and this is formatted as we expect
     f4_check = replaced_read[end_index-4:end_index-2]
-    print("f4 check: " + f4_check)
     assert f4_check=="f4"
 
+    first_fev = replaced_read[end_index-2:end_index]
     second_fev = replaced_read[end_index-6:end_index-4]
-    print("Second fev: " + second_fev)
     print("FEV: " + first_fev + second_fev)
 
     first_pf = replaced_read[end_index-8:end_index-6]
     second_pf = replaced_read[end_index-10:end_index-8]
     print("Peak Flow: " + first_pf + second_pf)
 elif format_type=="f4":
+
     end_index = replaced_read.rfind("7d")
-    print("End Index chars: " + replaced_read[end_index:end_index+2])
+
+    # make sure we're in the right place and this is formatted as we expect
     f3_check = replaced_read[end_index-2:end_index]
-    print("f3 check: " + f3_check)
     assert f3_check=="f3"
+
     first_fev = replaced_read[end_index-4:end_index-2]
-    print("First fev: " + first_fev)
     second_fev = replaced_read[end_index-6:end_index-4]
-    print("Second fev: " + second_fev)
     print("FEV: " + first_fev + second_fev)
+
     first_pf = replaced_read[end_index-8:end_index-6]
     second_pf = replaced_read[end_index-10:end_index-8]
     print("Peak Flow: " + first_pf + second_pf)
