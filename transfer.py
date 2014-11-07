@@ -66,7 +66,7 @@ while collected < attempts:
 
         print data_formatted
 
-        full_read += data_formatted
+        full_read += data_formatted[2:]
 
         collected += 1
     except usb.core.USBError as e:
@@ -80,41 +80,13 @@ replaced_read = full_read.replace("0x","")
 
 # 508 369
 
-print "Replaced string: " + replaced_read;
+print "Replaced string: " + replaced_read
 
-format_type = replaced_read[0:2]
+end_index = replaced_read.find("7d")
 
-print "Format type: " + format_type
+split_string = replaced_read.split('7d')[:-1]
 
-# two possible encoding format types encoded by the first two characters: either f3 or f4
-# the components are ordered and demarcated slightly differently.
-if format_type=="f3":
-
-    end_index = replaced_read.rfind("7d")
-
-    # make sure we're in the right place and this is formatted as we expect
-    f4_check = replaced_read[end_index-4:end_index-2]
-    assert f4_check=="f4"
-
-    first_fev = replaced_read[end_index-2:end_index]
-    second_fev = replaced_read[end_index-6:end_index-4]
-    print("FEV: " + first_fev + second_fev)
-
-    first_pf = replaced_read[end_index-8:end_index-6]
-    second_pf = replaced_read[end_index-10:end_index-8]
-    print("Peak Flow: " + first_pf + second_pf)
-elif format_type=="f4":
-
-    end_index = replaced_read.rfind("7d")
-
-    # make sure we're in the right place and this is formatted as we expect
-    f3_check = replaced_read[end_index-2:end_index]
-    assert f3_check=="f3"
-
-    first_fev = replaced_read[end_index-4:end_index-2]
-    second_fev = replaced_read[end_index-6:end_index-4]
-    print("FEV: " + first_fev + second_fev)
-
-    first_pf = replaced_read[end_index-8:end_index-6]
-    second_pf = replaced_read[end_index-10:end_index-8]
-    print("Peak Flow: " + first_pf + second_pf)
+for part in split_string:
+    first_pf = part[-8:-6]
+    second_pf = part[-5:-4]
+    print("Peak Flow : " + second_pf + first_pf)
