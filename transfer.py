@@ -65,7 +65,7 @@ while collected < attempts:
         data_formatted = ''.join([hex(x)[2:].zfill(2) for x in data])
 
         print data_formatted
-
+        # don't use the first two chars; these are (to our purposes) meaningless
         full_read += data_formatted[2:]
 
         collected += 1
@@ -76,16 +76,11 @@ while collected < attempts:
 
 print "Full read: " + full_read
 
+# take out hex prepends
 replaced_read = full_read.replace("0x","")
-
-# 508 369
-
-print "Replaced string: " + replaced_read
-
-end_index = replaced_read.find("7d")
-
+# split along EOL delimiter
 split_string = replaced_read.split('7d')[:-1]
-
+# for each delimiter, pull out PF knowing its -8 -> -5 from index
 for part in split_string:
     first_pf = part[-8:-6]
     second_pf = part[-5:-4]
